@@ -14,7 +14,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     pass
 
-class Content(models.Model, ABC):
+class Content(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(
