@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "api",
+    "content_moderator",
     "rest_framework",
 ]
 
@@ -126,4 +126,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-AUTH_USER_MODEL = "api.User"
+AUTH_USER_MODEL = "content_moderator.User"

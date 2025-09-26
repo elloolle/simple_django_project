@@ -1,8 +1,7 @@
-from abc import ABC, abstractmethod
-
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from django.contrib.auth.models import AbstractUser
+
 
 # class Recipe(models.Model):
 #     name = models.CharField(max_length=200)
@@ -13,6 +12,7 @@ from django.contrib.auth.models import AbstractUser
 #         return self.name
 class User(AbstractUser):
     pass
+
 
 class Content(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

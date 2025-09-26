@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Image, Text, User, Video
+from ..models import Image, Text, User, Video
 
 
 # class RecipeSerializer(serializers.ModelSerializer):
