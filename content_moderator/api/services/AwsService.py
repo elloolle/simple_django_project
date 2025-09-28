@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-class AWS_service:
+class AwsService:
     def __init__(self):
         session = boto3.session.Session()
         self.s3 = session.client(
@@ -20,4 +20,4 @@ class AWS_service:
     def upload_file(self, file_name):
         self.s3.upload_file(file_name, self.bucket_name, file_name)
 
-AWS_service().upload_file('README.md')
+AwsService().upload_file('README.md')
