@@ -1,7 +1,4 @@
-from django.views import View
-from rest_framework import status
-from rest_framework.decorators import permission_classes
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from ...models import Image
@@ -14,8 +11,10 @@ ModeratorService = ModeratorService()
 
 
 class ImageModeratorView(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+
     def perform_create(self, serializer):
         image = serializer.save()
         ModeratorService.moderateImage(image)
