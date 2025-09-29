@@ -11,7 +11,6 @@ class TextModeratorView(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Text.objects.all()
     serializer_class = TextSerializer
-
     def perform_create(self, serializer):
         text = serializer.save(author=self.request.user)
         moderateText.delay(text)
@@ -21,12 +20,11 @@ class ImageModeratorView(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-
     def perform_create(self, serializer):
         image = serializer.save(author=self.request.user)
         image_file = image.image_file
         uploadFile.delay(image_file.path, image_file.name)
-        # moderateImage.delay(image)
+        moderateImage.delay(image.id)
 
 
 class VideoModeratorView(ModelViewSet):

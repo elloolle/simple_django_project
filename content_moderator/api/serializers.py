@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
 from ..models import Image, Text, User, Video
+from .services.AwsService import generatePrinsignedURL
+
+
 
 
 class ContentSerializer(serializers.ModelSerializer):
@@ -17,6 +20,11 @@ class ImageSerializer(ContentSerializer):
     class Meta:
         model = Image
         fields = "__all__"
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep["image_file"] = generatePrinsignedURL(instance.image_file.name)
+        return rep
 
 
 class VideoSerializer(ContentSerializer):
