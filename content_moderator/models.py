@@ -25,14 +25,14 @@ class Content(models.Model):
 
 class Text(Content):
     author = models.ForeignKey(User, related_name="texts", on_delete=models.CASCADE)
-    text = models.TextField()
+    text_string = models.TextField()
 
 
 class Image(Content):
     author = models.ForeignKey(User, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="images/")
+    image_file = models.ImageField(upload_to="images/")
 
 
 class Video(Content):
     author = models.ForeignKey(User, related_name="videos", on_delete=models.CASCADE)
-    video = models.FileField(upload_to="videos/")
+    video_file = models.FileField(upload_to="videos/")

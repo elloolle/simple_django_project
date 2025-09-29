@@ -3,21 +3,29 @@ import os
 import boto3
 from dotenv import load_dotenv
 
+from simple_django_project.celery import app
+
+from ...config import AWSendpoint_url, AWSservice_name
+
+
 load_dotenv()
 
 
-class AwsService:
-    def __init__(self):
-        session = boto3.session.Session()
-        self.s3 = session.client(
-            service_name="s3",
-            endpoint_url="https://storage.yandexcloud.net",
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-        )
-        self.bucket_name = os.getenv("AWS_BUCKET_NAME")
+def getAwsConnection():
+    session = boto3.session.Session()
+    return session.client(
+        service_name=AWSservice_name,
+        endpoint_url=AWSendpoint_url,
+        aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+        aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    )
 
-    def upload_file(self, file_name):
-        self.s3.upload_file(file_name, self.bucket_name, file_name)
 
-AwsService().upload_file('README.md')
+AwsConnection = getAwsConnection()
+
+
+@app.task
+def uploadFile(file_path, file_name=None):
+    if file_name is None:
+        file_name = file_path
+    AwsConnection.upload_file(file_path, os.getenv("AWS_BUCKET_NAME"), file_name)

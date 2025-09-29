@@ -1,13 +1,20 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
-from ...models import Image
-from ..serializers import ImageSerializer
-from ..services.AwsService import AwsService
-from ..services.ModeratorService import ModeratorService
+from ...models import Image, Text, Video
+from ..serializers import TextSerializer, ImageSerializer, VideoSerializer
+from ..services.AwsService import uploadFile
+from ..services.ModeratorService import moderateImage, moderateText, moderateVideo
 
-AwsService = AwsService()
-ModeratorService = ModeratorService()
+
+class TextModeratorView(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Text.objects.all()
+    serializer_class = TextSerializer
+
+    def perform_create(self, serializer):
+        text = serializer.save(author=self.request.user)
+        moderateText.delay(text)
 
 
 class ImageModeratorView(ModelViewSet):
@@ -16,5 +23,19 @@ class ImageModeratorView(ModelViewSet):
     serializer_class = ImageSerializer
 
     def perform_create(self, serializer):
-        image = serializer.save()
-        ModeratorService.moderateImage(image)
+        image = serializer.save(author=self.request.user)
+        image_file = image.image_file
+        uploadFile.delay(image_file.path, image_file.name)
+        # moderateImage.delay(image)
+
+
+class VideoModeratorView(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+
+    def perform_create(self, serializer):
+        video = serializer.save(author=self.request.user)
+        video_file = video.video_file
+        uploadFile.delay(video_file.path, video_file.name)
+        moderateVideo.delay(video)
