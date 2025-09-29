@@ -31,6 +31,10 @@ class VideoSerializer(ContentSerializer):
     class Meta:
         model = Video
         fields = "__all__"
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep["video_file"] = generatePrinsignedURL(instance.video_file.name)
+        return rep
 
 
 class UserSerializer(serializers.ModelSerializer):
