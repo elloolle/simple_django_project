@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from ..models import Image, Text, User, Video
-from .services.AwsService import generatePrinsignedURL
+from content_moderator.services.AwsService import generatePrinsignedURL
 
 
 

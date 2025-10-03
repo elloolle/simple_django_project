@@ -3,9 +3,12 @@ import os
 
 import requests
 from dotenv import load_dotenv
-from ...config import imageModerateCategory, criticalImageProb
+
 from simple_django_project.celery import app
-from ...models import Image
+
+from content_moderator.config import criticalImageProb, imageModerateCategory
+from content_moderator.models import Image
+
 load_dotenv()
 
 imageParams = {
@@ -35,6 +38,15 @@ def moderateText(text):
 
 def moderateVideo(video):
     pass
+
+# s = r"C:\Users\Leo\Desktop\Прога\content_moderator\media\images\image.png"
+# moderateImage(s)
+
+
+
+def moderateVideo(video):
+    pass
+
 
 # s = r"C:\Users\Leo\Desktop\Прога\content_moderator\media\images\image.png"
 # moderateImage(s)
